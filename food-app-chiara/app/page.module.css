@@ -1,0 +1,64 @@
+.relleno {
+  width: 600px;
+  margin: 50px auto;
+  text-align: justify;
+  font-size: 18px;
+}
+
+.container {
+  &__shape {
+    width: 600px;
+    height: 300px;
+    margin: auto;
+    background-color: rgb(189, 255, 75);
+    clip-path: polygon(0 5%, 100% 0, 100% 95%, 0% 100%);
+    display: flex;
+    flex-direction: column;
+
+    &__text{
+      transform: rotate(-1.5deg);
+
+      & h1, p {
+        font-size: 32px;
+        position: relative;
+        left: -20%;
+        width: 120%;
+        padding: 10px 0;
+        border-bottom: 1px solid aliceblue;
+        color: aliceblue;
+        text-align: center;
+        font-weight: bold;
+      }
+  
+      & p {
+        view-timeline-name: --p;
+        view-timeline-axis: block;
+        animation-timeline: --p;
+        animation-name: firstLine;
+      }
+
+      /* & h1 {
+        animation: secondLine 3s linear infinite;
+      } */
+    }
+    
+  }
+}
+
+@keyframes firstLine {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(24.5%);
+  }
+}
+
+@keyframes secondLine {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-24.5%);
+  }
+}
