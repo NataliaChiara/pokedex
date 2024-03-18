@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Flex, Text } from '@chakra-ui/react';
+import db from 'db.json';
 import PokemonContainer from '../components/PokemonContainer';
 
 export default function Inventory() {
   const [pokemons, setPokemons] = useState([]);
   const [itsLoading, setItsLoading] = useState(true);
-
+  console.log(db);
   function getPokemons() {
     fetch('http://localhost:3000/api/catched', {
       method: 'GET',
@@ -22,7 +23,7 @@ export default function Inventory() {
       .then((data) => {
         const pokemons = data.map((item) => item);
         setPokemons((prev) => [...prev, ...pokemons]);
-        setItsLoading(false); // Mover aquí
+        setItsLoading(false);
       })
       .catch((error) => {
         console.error('Hubo un problema con la solicitud:', error);
@@ -54,7 +55,6 @@ export default function Inventory() {
   }
 
   function updateInventory() {
-    console.log('update');
     setPokemons([]);
     setItsLoading(true);
 
@@ -73,7 +73,9 @@ export default function Inventory() {
         Inventario
       </Text>
       {itsLoading ? (
-        <span>Cargando...</span>
+        <Text textAlign="center" color="white">
+          Cargando...
+        </Text>
       ) : (
         <PokemonContainer
           pokemons={pokemons}
