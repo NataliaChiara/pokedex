@@ -1,20 +1,7 @@
-import { useEffect } from 'react';
 import { AspectRatio, Image, Stack, Progress, Text, Badge, HStack, Button } from '@chakra-ui/react';
-import data from '../../db.json';
 
 export default function PokemonData({ pokemon, itsPokedex, updateInventory }) {
   const { weight, height, moves, hp, attack } = pokemon;
-
-  const saveDBLocalStorage = () => {
-    try {
-      if (data) {
-        const jsonString = JSON.stringify(data);
-        localStorage.setItem('savedPokemons', jsonString);
-      }
-    } catch (error) {
-      console.error('Error al guardar el archivo JSON en localStorage:', error);
-    }
-  };
 
   function savePokemon(pokemon) {
     const { id, name, weight, height, moves, types, hp, attack } = pokemon;
@@ -44,16 +31,11 @@ export default function PokemonData({ pokemon, itsPokedex, updateInventory }) {
       })
       .then((data) => {
         console.log('se guardo: ', data);
-        saveDBLocalStorage();
       })
       .catch((error) => {
         console.error('Error:', error);
       });
   }
-
-  useEffect(() => {
-    saveDBLocalStorage();
-  }, []);
 
   function deletePokemon(pokemonId) {
     fetch(`http://localhost:3000/api/catched/${pokemonId}`, {

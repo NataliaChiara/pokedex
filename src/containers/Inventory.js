@@ -7,34 +7,26 @@ export default function Inventory() {
   const [itsLoading, setItsLoading] = useState(true);
 
   function getPokemons() {
-    const jsonString = localStorage.getItem('savedPokemons');
-    if (jsonString) {
-      const jsonData = JSON.parse(jsonString);
-      setPokemons((prev) => [...prev, ...jsonData.catchedPokemon]);
-      setItsLoading(false); // Mover aquí
-      return jsonData;
-    } else {
-      fetch('http://localhost:3000/api/catched', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
+    fetch('http://localhost:3000/api/catched', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
         }
+        return response.json();
       })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then((data) => {
-          const pokemons = data.map((item) => item);
-          setPokemons((prev) => [...prev, ...pokemons]);
-          setItsLoading(false); // Mover aquí
-        })
-        .catch((error) => {
-          console.error('Hubo un problema con la solicitud:', error);
-        });
-    }
+      .then((data) => {
+        const pokemons = data.map((item) => item);
+        setPokemons((prev) => [...prev, ...pokemons]);
+        setItsLoading(false); // Mover aquí
+      })
+      .catch((error) => {
+        console.error('Hubo un problema con la solicitud:', error);
+      });
   }
 
   useEffect(() => {
@@ -42,7 +34,6 @@ export default function Inventory() {
   }, []);
 
   async function deleteInventory() {
-    localStorage.setItem('savedPokemons', '');
     try {
       const response = await fetch('http://localhost:3000/api/catched', {
         method: 'DELETE'
