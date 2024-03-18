@@ -50,7 +50,7 @@ export default function PokemonData({ pokemon, itsPokedex, updateInventory, hand
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        console.log('pokemon eliminado', pokemonId);
+        alert('Pokemon ', pokemon.name, 'eliminado');
         updateInventory();
       })
       .catch((error) => {

@@ -43,7 +43,7 @@ export default function Inventory() {
       });
 
       if (response.ok) {
-        console.log('Lista de Pokémon atrapados eliminada correctamente.');
+        alert('Lista de Pokémon atrapados eliminada correctamente.');
       } else {
         console.error(
           'Error al intentar eliminar la lista de Pokémon atrapados:',
@@ -58,11 +58,7 @@ export default function Inventory() {
 
   function updateInventory() {
     setPokemons([]);
-    setItsLoading(true);
-
-    setTimeout(() => {
-      getPokemons();
-    }, 200);
+    getPokemons();
   }
 
   return (

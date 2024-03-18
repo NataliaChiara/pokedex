@@ -1,10 +1,10 @@
-.trivia_image_container {
+.image_container {
   background-image: url('/images/pokemonTriviaBg.png');
   background-size: contain;
   background-repeat: no-repeat;
   width: 400px;
   height: 226px;
 }
-.trivia_image {
+.image {
   filter: brightness(0);
 }

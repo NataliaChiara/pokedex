@@ -12,7 +12,6 @@ export default function Pokedex() {
   );
 
   function getData() {
-    setItsLoading(true);
     axios.get(currentPage).then(async ({ data }) => {
       const promises = data.results.map((result) => axios(result.url));
       // eslint-disable-next-line no-undef
@@ -36,12 +35,13 @@ export default function Pokedex() {
       });
       setPokemons((prev) => [...prev, ...formattedPokemons]);
       setCurrentPage(data.next);
-      setItsLoading(false);
     });
   }
 
   useEffect(() => {
     getData();
+    setItsLoading(false);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

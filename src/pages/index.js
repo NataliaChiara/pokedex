@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import Head from 'next/head';
 import { Flex, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Box } from '@chakra-ui/react';
-import Pokedex from '@/containers/Pokedex';
-import Inventory from '@/containers/Inventory';
-import Trivia from '@/containers/Trivia';
+import { Inventory, Pokedex, Trivia } from '@/containers';
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState('pokedex');

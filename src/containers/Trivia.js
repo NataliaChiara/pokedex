@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
 import { Flex, Box, Text, Button, Input } from '@chakra-ui/react';
-import s from '@/styles/Home.module.css';
+import s from '@/styles/Trivia.module.css';
 
-export default function Trivia(data) {
+export default function Trivia() {
   const [pokemon, setPokemon] = useState(null);
-  const [inputValue, setInputValue] = useState();
+  const [inputValue, setInputValue] = useState('');
   const [count, setCount] = useState({
     next: 0,
     right: 0,
@@ -52,7 +52,7 @@ export default function Trivia(data) {
         wrong: prevCount.wrong + 1
       }));
     }
-    getData(data);
+    getData();
   }
 
   function next() {
@@ -60,7 +60,7 @@ export default function Trivia(data) {
       ...prevCount,
       next: prevCount.next + 1
     }));
-    getData(data);
+    getData();
   }
 
   return (
@@ -79,10 +79,10 @@ export default function Trivia(data) {
         <Text>Erroneos: {count.wrong}</Text>
         <Text>Salteados: {count.next}</Text>
       </Flex>
-      <Box className={s.trivia_image_container}>
+      <Box className={s.image_container}>
         {pokemon && (
           <Image
-            className={s.trivia_image}
+            className={s.image}
             src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemon.id}.png`}
             alt="pokemon image"
             width={200}

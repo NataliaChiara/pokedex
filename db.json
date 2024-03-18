@@ -1,1 +1,1 @@
-{"catchedPokemon":[]}
+{"catchedPokemon":[{"id":1,"name":"bulbasaur","weight":69,"height":7,"types":["grass","poison"],"hp":45,"attack":49},{"id":2,"name":"ivysaur","weight":130,"height":10,"types":["grass","poison"],"hp":60,"attack":62}]}
