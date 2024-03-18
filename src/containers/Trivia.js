@@ -3,9 +3,9 @@ import Image from 'next/image';
 import { Flex, Box, Text, Button, Input } from '@chakra-ui/react';
 import s from '@/styles/Trivia.module.css';
 
-export default function Trivia(pokemons) {
+export default function Trivia({ pokemons }) {
   const [inputValue, setInputValue] = useState('');
-  const [selectPokemon, setSelectPokemon] = useState('');
+  const [selectedPokemon, setSelectedPokemon] = useState('');
   const [count, setCount] = useState({
     next: 0,
     right: 0,
@@ -14,7 +14,7 @@ export default function Trivia(pokemons) {
 
   function setPokemon() {
     const randomPokemon = pokemons[Math.floor(Math.random() * pokemons.length)];
-    setSelectPokemon(randomPokemon);
+    setSelectedPokemon(randomPokemon);
   }
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function Trivia(pokemons) {
   }
 
   function updateTrivia() {
-    inputValue('');
+    setInputValue('');
     setPokemon();
   }
 
@@ -39,7 +39,7 @@ export default function Trivia(pokemons) {
   }
 
   function send() {
-    const pokemonName = selectPokemon.name.replace('-', ' ');
+    const pokemonName = selectedPokemon.name.replace('-', ' ');
     if (pokemonName === inputValue.toLowerCase()) {
       alert('¡Correcto!');
       setCount((prevCount) => ({
@@ -73,10 +73,10 @@ export default function Trivia(pokemons) {
         <Text>Salteados: {count.next}</Text>
       </Flex>
       <Box className={s.image_container}>
-        {selectPokemon && (
+        {selectedPokemon && (
           <Image
             className={s.image}
-            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${selectPokemon.id}.png`}
+            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${selectedPokemon.id}.png`}
             alt="pokemon image"
             width={200}
             height={200}
