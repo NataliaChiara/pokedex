@@ -15,7 +15,7 @@ export default function PokemonData({ pokemon, itsPokedex, updateInventory, hand
       hp: hp,
       attack: attack
     };
-    fetch('https://pokedex-ebon-theta.vercel.app/api/catched', {
+    fetch('http://localhost:3000/api/catched', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -40,7 +40,7 @@ export default function PokemonData({ pokemon, itsPokedex, updateInventory, hand
   }
 
   function deletePokemon(pokemonId) {
-    fetch(`https://pokedex-ebon-theta.vercel.app/api/catched/${pokemonId}`, {
+    fetch(`http://localhost:3000/api/catched/${pokemonId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'

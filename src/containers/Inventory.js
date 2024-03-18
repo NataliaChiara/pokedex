@@ -7,7 +7,7 @@ export default function Inventory() {
   const [itsLoading, setItsLoading] = useState(true);
 
   function getPokemons() {
-    fetch('https://pokedex-ebon-theta.vercel.app/api/catched', {
+    fetch('http://localhost:3000/api/catched', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -35,7 +35,7 @@ export default function Inventory() {
 
   async function deleteInventory() {
     try {
-      const response = await fetch('https://pokedex-ebon-theta.vercel.app/api/catched', {
+      const response = await fetch('http://localhost:3000/api/catched', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
