@@ -1,57 +1,67 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 import Image from 'next/image';
 import { Flex, Box, Text, Button } from '@chakra-ui/react';
-import styles from '@/styles/Home.module.css';
+import s from '@/styles/Home.module.css';
 
 export default function Trivia(data) {
   const [pokemon, setPokemon] = useState(null);
-  const [valor, setValor] = useState('');
-  const [adivinados, setAdivinados] = useState(0);
-  const [erroneos, setErroneos] = useState(0);
-  const [salteados, setSalteados] = useState(0);
+  const [inputValue, setInputValue] = useState();
+  const [count, setCount] = useState({
+    next: 0,
+    right: 0,
+    wrong: 0
+  });
 
-  function getData(data) {
-    const pokemonData = data.data.results.map((result) => {
-      const parts = result.url.split('/');
-      const id = parts[parts.length - 2];
-      return { id: id, name: result.name };
+  function getData() {
+    axios.get('https://pokeapi.co/api/v2/pokemon/').then(async ({ data }) => {
+      axios.get(`https://pokeapi.co/api/v2/pokemon/?limit=${data.count}`).then(async ({ data }) => {
+        const pokemonData = data.results.map((result) => {
+          const parts = result.url.split('/');
+          const id = parts[parts.length - 2];
+          return { id: id, name: result.name };
+        });
+
+        const randomPokemon = pokemonData[Math.floor(Math.random() * pokemonData.length)];
+        setPokemon(randomPokemon);
+        setInputValue('');
+      });
     });
-
-    const randomPokemon = pokemonData[Math.floor(Math.random() * pokemonData.length)];
-    setPokemon(randomPokemon);
-    setValor('');
   }
 
   useEffect(() => {
-    getData(data);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    getData();
   }, []);
 
-  if (pokemon) {
-    console.log(pokemon.name.replace('-', ' '));
+  function handleChange(event) {
+    setInputValue(event.target.value);
   }
 
-  const handleCambio = (event) => {
-    setValor(event.target.value);
-  };
-
-  const getResult = () => {
+  function send() {
     const pokemonName = pokemon.name.replace('-', ' ');
-    if (pokemonName === valor.toLowerCase()) {
+    if (pokemonName === inputValue.toLowerCase()) {
       alert('¡Correcto!');
-      setAdivinados(adivinados + 1);
-      getData(data);
+      setCount((prevCount) => ({
+        ...prevCount,
+        right: prevCount.right + 1
+      }));
     } else {
       alert('Incorrecto');
-      setErroneos(erroneos + 1);
-      getData(data);
+      setCount((prevCount) => ({
+        ...prevCount,
+        wrong: prevCount.wrong + 1
+      }));
     }
-  };
-
-  const saltarPokemon = () => {
-    setSalteados(salteados + 1);
     getData(data);
-  };
+  }
+
+  function next() {
+    setCount((prevCount) => ({
+      ...prevCount,
+      next: prevCount.next + 1
+    }));
+    getData(data);
+  }
 
   return (
     <Flex
@@ -61,35 +71,34 @@ export default function Trivia(data) {
       flexDirection="column"
       gap="30px"
       bg="radial-gradient(circle, rgba(135,63,251,1) 0%, rgba(255,81,172,1) 100%)">
-      <Text color="white" fontSize="5xl" textAlign="center" padding="30px 0">
+      <Text color="white" fontSize="5xl" textAlign="center">
         Trivia
       </Text>
-      <Box color="white">
-        <Text>Adivinados: {adivinados}</Text>
-        <Text>Erroneos: {erroneos}</Text>
-        <Text>Salteados: {salteados}</Text>
-      </Box>
-      <div className={styles.image_container}>
+      <Flex color="white" gap="15px">
+        <Text>Adivinados: {count.right}</Text>
+        <Text>Erroneos: {count.wrong}</Text>
+        <Text>Salteados: {count.next}</Text>
+      </Flex>
+      <Box className={s.trivia_image_container}>
         {pokemon && (
           <Image
-            className={styles.image}
+            className={s.trivia_image}
             src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemon.id}.png`}
             alt="pokemon image"
             width={200}
             height={200}
           />
         )}
-      </div>
+      </Box>
       <input
-        id="inputTexto"
         type="text"
-        value={valor}
-        onChange={handleCambio}
+        value={inputValue}
+        onChange={handleChange}
         placeholder="Escribir el nombre"
       />
       <Flex gap="10px">
-        <Button onClick={getResult}>Enviar</Button>
-        <Button onClick={saltarPokemon}>Saltar</Button>
+        <Button onClick={send}>Enviar</Button>
+        <Button onClick={next}>Saltar</Button>
       </Flex>
     </Flex>
   );

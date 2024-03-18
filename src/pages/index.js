@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Head from 'next/head';
-import axios from 'axios';
 import { Flex, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Box } from '@chakra-ui/react';
 import Pokedex from '@/containers/Pokedex';
 import Inventory from '@/containers/Inventory';
@@ -8,19 +7,6 @@ import Trivia from '@/containers/Trivia';
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState('pokedex');
-  const [data, setData] = useState();
-
-  function getData() {
-    axios.get('https://pokeapi.co/api/v2/pokemon/').then(async ({ data }) => {
-      axios.get(`https://pokeapi.co/api/v2/pokemon/?limit=${data.count}`).then(async ({ data }) => {
-        setData(data);
-      });
-    });
-  }
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   return (
     <>
@@ -57,7 +43,7 @@ export default function Home() {
         </Flex>
         {activeSection === 'pokedex' && <Pokedex />}
         {activeSection === 'inventory' && <Inventory />}
-        {activeSection === 'trivia' && <Trivia data={data} />}
+        {activeSection === 'trivia' && <Trivia />}
       </Box>
     </>
   );
