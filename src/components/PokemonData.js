@@ -41,7 +41,10 @@ export default function PokemonData({ pokemon, itsPokedex, updateInventory, hand
 
   function deletePokemon(pokemonId) {
     fetch(`http://localhost:3000/api/catched/${pokemonId}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
       .then((response) => {
         if (!response.ok) {

@@ -37,7 +37,10 @@ export default function Inventory() {
   async function deleteInventory() {
     try {
       const response = await fetch('http://localhost:3000/api/catched', {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
 
       if (response.ok) {
