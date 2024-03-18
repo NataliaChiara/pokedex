@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Flex, Button, Text } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import PokemonContainer from '../components/PokemonContainer';
 
 export default function Inventory() {
@@ -60,26 +60,26 @@ export default function Inventory() {
 
     setTimeout(() => {
       getPokemons();
-    }, 200); // Esperar 1 segundo antes de llamar a getPokemons()
+    }, 200);
   }
 
   return (
     <Flex
-      marginTop="30px"
-      padding="30px"
+      minH="100vh"
+      paddingTop="60px"
       flexDirection="column"
-      alignItems="center"
-      gap="30px"
-      justifyContent="center"
       bg="radial-gradient(circle, rgba(75,251,63,1) 0%, rgba(54,60,255,1) 100%)">
-      <Text color="white" fontSize="5xl" textAlign="center" paddingTop="30px">
+      <Text color="white" fontSize="5xl" textAlign="center" padding="30px 0">
         Inventario
       </Text>
-      {pokemons.length != 0 && <Button onClick={deleteInventory}>Eliminar inventario</Button>}
       {itsLoading ? (
         <span>Cargando...</span>
       ) : (
-        <PokemonContainer pokemons={pokemons} updateInventory={updateInventory} />
+        <PokemonContainer
+          pokemons={pokemons}
+          updateInventory={updateInventory}
+          deleteInventory={deleteInventory}
+        />
       )}
     </Flex>
   );

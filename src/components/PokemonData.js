@@ -1,6 +1,6 @@
 import { AspectRatio, Image, Stack, Progress, Text, Badge, HStack, Button } from '@chakra-ui/react';
 
-export default function PokemonData({ pokemon, itsPokedex, updateInventory }) {
+export default function PokemonData({ pokemon, itsPokedex, updateInventory, handleCloseModal }) {
   const { weight, height, moves, hp, attack } = pokemon;
 
   function savePokemon(pokemon) {
@@ -30,11 +30,13 @@ export default function PokemonData({ pokemon, itsPokedex, updateInventory }) {
         }
       })
       .then((data) => {
-        console.log('se guardo: ', data);
+        alert('Pokemon ' + data.name + ' guardado!');
       })
       .catch((error) => {
         console.error('Error:', error);
+        alert('No se pudo guardar, ya esta en el inventario');
       });
+    handleCloseModal();
   }
 
   function deletePokemon(pokemonId) {
@@ -51,16 +53,12 @@ export default function PokemonData({ pokemon, itsPokedex, updateInventory }) {
       .catch((error) => {
         console.error('Hubo un problema con la solicitud:', error);
       });
+    handleCloseModal();
   }
 
   return (
     <Stack spacing="5" pb="5">
       <Stack spacing="5" position="relative">
-        {itsPokedex ? (
-          <Button onClick={() => savePokemon(pokemon)}>Guardar en el inventario</Button>
-        ) : (
-          <Button onClick={() => deletePokemon(pokemon.id)}>Delete</Button>
-        )}
         <AspectRatio w="full" ratio={1}>
           <Image
             objectFit="contain"
@@ -104,6 +102,11 @@ export default function PokemonData({ pokemon, itsPokedex, updateInventory }) {
           <Progress bg="gray.300" borderRadius="full" value={attack} />
         </Stack>
       </Stack>
+      {itsPokedex ? (
+        <Button onClick={() => savePokemon(pokemon)}>Guardar en el inventario</Button>
+      ) : (
+        <Button onClick={() => deletePokemon(pokemon.id)}>Delete</Button>
+      )}
     </Stack>
   );
 }

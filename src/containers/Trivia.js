@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
-import { Flex, Box, Text, Button } from '@chakra-ui/react';
+import { Flex, Box, Text, Button, Input } from '@chakra-ui/react';
 import s from '@/styles/Home.module.css';
 
 export default function Trivia(data) {
@@ -65,10 +65,10 @@ export default function Trivia(data) {
 
   return (
     <Flex
-      alignItems="center"
-      justifyContent="center"
       minH="100vh"
+      paddingTop="100px"
       flexDirection="column"
+      alignItems="center"
       gap="30px"
       bg="radial-gradient(circle, rgba(135,63,251,1) 0%, rgba(255,81,172,1) 100%)">
       <Text color="white" fontSize="5xl" textAlign="center">
@@ -90,7 +90,9 @@ export default function Trivia(data) {
           />
         )}
       </Box>
-      <input
+      <Input
+        bg="white"
+        width="250px"
         type="text"
         value={inputValue}
         onChange={handleChange}

@@ -18,13 +18,21 @@ import {
 import PokemonCard from '@/components/PokemonCard';
 import PokemonData from '@/components/PokemonData';
 
-export default function PokemonContainer({ pokemons, nextPage, itsPokedex, updateInventory }) {
+export default function PokemonContainer({
+  pokemons,
+  nextPage,
+  itsPokedex,
+  updateInventory,
+  deleteInventory
+}) {
   const [selectedPokemon, setSelectedPokemon] = useState();
   const pokemonDataModal = useDisclosure();
   const [types, setTypes] = useState([]);
   const [selectedType, setSelectedType] = useState();
   const [filteredPokemons, setFilteredPokemons] = useState();
   const [itsFiltered, setItsFiltered] = useState(false);
+
+  // filtro
 
   function getAllTypes(pokemons) {
     const totalTypes = ['Filtrar por tipo'];
@@ -44,11 +52,6 @@ export default function PokemonContainer({ pokemons, nextPage, itsPokedex, updat
     getAllTypes(pokemons);
   }, [pokemons]);
 
-  function handleViewPokemon(pokemon) {
-    setSelectedPokemon(pokemon);
-    pokemonDataModal.onOpen();
-  }
-
   function filterTypes(event) {
     const selectedType = event.target.value;
     setSelectedType(selectedType);
@@ -63,46 +66,56 @@ export default function PokemonContainer({ pokemons, nextPage, itsPokedex, updat
     }
   }
 
+  // modal
+
+  function handleViewPokemon(pokemon) {
+    setSelectedPokemon(pokemon);
+    pokemonDataModal.onOpen();
+  }
+
+  function handleCloseModal() {
+    pokemonDataModal.onClose();
+  }
+
+  const pokemonsToShow = itsFiltered ? filteredPokemons : pokemons;
+
   return (
     <>
-      <Select
-        bg="white"
-        width="200px"
-        margin="auto auto 30px auto"
-        value={selectedType}
-        onChange={filterTypes}>
-        {types.map((type) => (
-          <option key={type} value={type}>
-            {type}
-          </option>
-        ))}
-      </Select>
-      <Flex flexDirection="column" minH="100vh" width="70vw" margin="auto">
+      <Box>
         {pokemons.length === 0 ? (
-          <Text textAlign="center" marginTop="30px">
-            No hay pokemons para mostrar
-          </Text>
+          !itsPokedex && (
+            <Text textAlign="center" color="white">
+              No hay pokemons para mostrar
+            </Text>
+          )
         ) : (
-          <SimpleGrid spacing="5" columns={{ base: 1, md: 5 }}>
-            {itsFiltered
-              ? filteredPokemons.map((pokemon) => (
-                  <Box as="button" key={pokemon.id} onClick={() => handleViewPokemon(pokemon)}>
-                    <PokemonCard pokemon={pokemon} />
-                  </Box>
-                ))
-              : pokemons.map((pokemon) => (
-                  <Box as="button" key={pokemon.id} onClick={() => handleViewPokemon(pokemon)}>
-                    <PokemonCard pokemon={pokemon} />
-                  </Box>
+          <Flex width="70vw" flexDirection="column" gap="30px" margin="0 auto" alignItems="center">
+            <Flex justifyContent="center" gap="50px">
+              <Select bg="white" width="200px" value={selectedType} onChange={filterTypes}>
+                {types.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
                 ))}
-          </SimpleGrid>
+              </Select>
+              {!itsPokedex && <Button onClick={deleteInventory}>Eliminar inventario</Button>}
+            </Flex>
+
+            <SimpleGrid spacing="5" columns={{ base: 1, md: 5 }}>
+              {pokemonsToShow.map((pokemon) => (
+                <Box as="button" key={pokemon.id} onClick={() => handleViewPokemon(pokemon)}>
+                  <PokemonCard pokemon={pokemon} />
+                </Box>
+              ))}
+            </SimpleGrid>
+            {itsPokedex && !itsFiltered && (
+              <Button width="fit-content" margin="30px auto" onClick={nextPage}>
+                Cargar más
+              </Button>
+            )}
+          </Flex>
         )}
-        {itsPokedex && !itsFiltered && (
-          <Button width="fit-content" margin="30px auto" onClick={nextPage}>
-            Cargar más
-          </Button>
-        )}
-      </Flex>
+      </Box>
       <Modal {...pokemonDataModal}>
         <ModalOverlay />
         <ModalContent width="300px">
@@ -114,6 +127,7 @@ export default function PokemonContainer({ pokemons, nextPage, itsPokedex, updat
                 pokemon={selectedPokemon}
                 itsPokedex={itsPokedex}
                 updateInventory={updateInventory}
+                handleCloseModal={handleCloseModal}
               />
             )}
           </ModalBody>
