@@ -1,44 +1,45 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import Image from 'next/image';
 import { Flex, Box, Text, Button, Input } from '@chakra-ui/react';
 import s from '@/styles/Trivia.module.css';
 
-export default function Trivia() {
-  const [pokemon, setPokemon] = useState(null);
+export default function Trivia(pokemons) {
   const [inputValue, setInputValue] = useState('');
+  const [selectPokemon, setSelectPokemon] = useState('');
   const [count, setCount] = useState({
     next: 0,
     right: 0,
     wrong: 0
   });
 
-  function getData() {
-    axios.get('https://pokeapi.co/api/v2/pokemon/').then(async ({ data }) => {
-      axios.get(`https://pokeapi.co/api/v2/pokemon/?limit=${data.count}`).then(async ({ data }) => {
-        const pokemonData = data.results.map((result) => {
-          const parts = result.url.split('/');
-          const id = parts[parts.length - 2];
-          return { id: id, name: result.name };
-        });
-
-        const randomPokemon = pokemonData[Math.floor(Math.random() * pokemonData.length)];
-        setPokemon(randomPokemon);
-        setInputValue('');
-      });
-    });
+  function setPokemon() {
+    const randomPokemon = pokemons[Math.floor(Math.random() * pokemons.length)];
+    setSelectPokemon(randomPokemon);
   }
 
   useEffect(() => {
-    getData();
+    setPokemon();
   }, []);
 
   function handleChange(event) {
     setInputValue(event.target.value);
   }
 
+  function updateTrivia() {
+    inputValue('');
+    setPokemon();
+  }
+
+  function next() {
+    setCount((prevCount) => ({
+      ...prevCount,
+      next: prevCount.next + 1
+    }));
+    updateTrivia();
+  }
+
   function send() {
-    const pokemonName = pokemon.name.replace('-', ' ');
+    const pokemonName = selectPokemon.name.replace('-', ' ');
     if (pokemonName === inputValue.toLowerCase()) {
       alert('¡Correcto!');
       setCount((prevCount) => ({
@@ -52,15 +53,7 @@ export default function Trivia() {
         wrong: prevCount.wrong + 1
       }));
     }
-    getData();
-  }
-
-  function next() {
-    setCount((prevCount) => ({
-      ...prevCount,
-      next: prevCount.next + 1
-    }));
-    getData();
+    updateTrivia();
   }
 
   return (
@@ -80,10 +73,10 @@ export default function Trivia() {
         <Text>Salteados: {count.next}</Text>
       </Flex>
       <Box className={s.image_container}>
-        {pokemon && (
+        {selectPokemon && (
           <Image
             className={s.image}
-            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemon.id}.png`}
+            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${selectPokemon.id}.png`}
             alt="pokemon image"
             width={200}
             height={200}

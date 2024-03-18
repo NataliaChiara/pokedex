@@ -23,7 +23,8 @@ export default function PokemonContainer({
   nextPage,
   itsPokedex,
   updateInventory,
-  deleteInventory
+  deleteInventory,
+  noMorePokemons
 }) {
   const [selectedPokemon, setSelectedPokemon] = useState();
   const pokemonDataModal = useDisclosure();
@@ -89,7 +90,13 @@ export default function PokemonContainer({
             </Text>
           )
         ) : (
-          <Flex width="70vw" flexDirection="column" gap="30px" margin="0 auto" alignItems="center">
+          <Flex
+            width="70vw"
+            flexDirection="column"
+            gap="30px"
+            padding="30px 0"
+            margin="0 auto"
+            alignItems="center">
             <Flex justifyContent="center" gap="50px">
               <Select bg="white" width="200px" value={selectedType} onChange={filterTypes}>
                 {types.map((type) => (
@@ -108,8 +115,8 @@ export default function PokemonContainer({
                 </Box>
               ))}
             </SimpleGrid>
-            {itsPokedex && !itsFiltered && (
-              <Button width="fit-content" margin="30px auto" onClick={nextPage}>
+            {itsPokedex && !itsFiltered && !noMorePokemons && (
+              <Button width="fit-content" onClick={nextPage}>
                 Cargar más
               </Button>
             )}
