@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Flex, Text } from '@chakra-ui/react';
-import db from 'db.json';
 import PokemonContainer from '../components/PokemonContainer';
 
 export default function Inventory() {
   const [pokemons, setPokemons] = useState([]);
   const [itsLoading, setItsLoading] = useState(true);
-  console.log(db);
+
   function getPokemons() {
-    fetch('http://localhost:3000/api/catched', {
+    fetch('https://pokedex-five-henna-61.vercel.app/api/catched', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -36,7 +35,7 @@ export default function Inventory() {
 
   async function deleteInventory() {
     try {
-      const response = await fetch('http://localhost:3000/api/catched', {
+      const response = await fetch('https://pokedex-five-henna-61.vercel.app/api/catched', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'

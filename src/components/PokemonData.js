@@ -15,7 +15,7 @@ export default function PokemonData({ pokemon, itsPokedex, updateInventory, hand
       hp: hp,
       attack: attack
     };
-    fetch('http://localhost:3000/api/catched', {
+    fetch('https://pokedex-five-henna-61.vercel.app/api/catched', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -40,7 +40,7 @@ export default function PokemonData({ pokemon, itsPokedex, updateInventory, hand
   }
 
   function deletePokemon(pokemonId) {
-    fetch(`http://localhost:3000/api/catched/${pokemonId}`, {
+    fetch(`https://pokedex-five-henna-61.vercel.app/api/catched/${pokemonId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
